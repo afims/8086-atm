@@ -1,0 +1,22 @@
+< THE SYMBOL TABLE >  mup_final.com  --  emu8086 assembler version: 4.07 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+TABLE_KEYPAD             	00102     	1         	VAR       	(NOSEG)   
+CODE                     	0010D     	-1        	LABEL     	(NOSEG)   
+STARTUP                  	0010D     	-1        	LABEL     	(NOSEG)   
+START                    	0010D     	-1        	LABEL     	(NOSEG)   
+RETURN                   	0011F     	-1        	LABEL     	(NOSEG)   
+NEXT                     	001F0     	-1        	LABEL     	(NOSEG)   
+ALARM                    	00295     	-1        	LABEL     	(NOSEG)   
+END1                     	002A8     	-1        	LABEL     	(NOSEG)   
+KEYBOARD                 	002B5     	-1        	NEAR      	(NOSEG)   
+X0                       	002B8     	-1        	LABEL     	(NOSEG)   
+X1                       	002C6     	-1        	LABEL     	(NOSEG)   
+X2                       	002E6     	-1        	LABEL     	(NOSEG)   
+DELAY20MS                	002F7     	-1        	NEAR      	(NOSEG)   
+XX                       	002FB     	-1        	LABEL     	(NOSEG)   
+===================================================================================================
+[ 10-10-2013  --  16:09:54 ] 
+< END >
+ 

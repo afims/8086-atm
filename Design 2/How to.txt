@@ -1,0 +1,28 @@
+User interface
+1) On startup, 8086 jumps to ffff0 and begins to execute code
+2) User will enter time for data logging as hours [OK], mins [ok]
+3) User will then input if avg is required as Y/N [ok]
+4) C (clear) option is available to clear and change current option
+5) < and > options allow user to navigate between the 3 inputs
+6) Add a STOP button???
+7) After user presses ok for avg, logging starts
+
+Code:
+Functions needed:
+1) A code to read from keypad; check for stop
+2) A function to calculate number of data logs
+3) A delay function for 6 minutes - time taken for logging
+4) A function to take in data and display it
+5) A function to calculate average and display it only if required
+6) A function to interrupt if STOP is pressed and  allow user to input new values
+
+Clock cycles in textbook on page 798
+
+Interfacing:
+8086 to:
+Memory
+8255A
+
+8255A to:
+sensors through ADC
+displays

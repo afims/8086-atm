@@ -1,0 +1,248 @@
+org 100h
+.model tiny
+.data
+table_keypad db 0b7h,7bh,0bbh,0dbh,7dh,0bdh,0ddh,7eh,0beh,0deh,77h
+porta equ 00h
+portb equ 02h
+portc equ 04h
+cw    equ 06h
+port1a equ 01h
+port1b equ 03h
+port1c equ 05h
+cw1    equ 07h
+pwd equ 2308h
+bal equ 1234h
+
+.code
+.startup
+start:  mov ah,00h
+        mov al,82h
+        out cw,al
+        mov al,80h
+        out cw1,al
+        mov ch,0eeh
+        mov dx,0000h
+        mov bx,0002h
+
+return: mov dx,0000h
+        call keyboard
+        mov al,cl
+        out portc,al
+        mov dl,cl
+        call delay20ms
+        call keyboard
+        mov al,cl
+        out port1a,al
+        rol dl,4
+        add dl,cl
+        call delay20ms
+        
+ call keyboard
+mov al,cl
+rol dx,4
+out port1b,al
+mov al,cl
+add dx,ax
+call delay20ms
+call delay20ms
+call keyboard
+mov al,cl
+out port1c,al
+call delay20ms
+call delay20ms
+call delay20ms
+mov al,cl
+rol dx,4
+add dx,ax
+
+;call delay20ms
+;call delay20ms
+;call delay20ms
+cmp dx,pwd
+jz next
+dec bx
+jz alarm
+mov al,0bh
+out portc,al
+mov al, 0ah
+out port1a,al
+mov al, 0dh
+out port1b,al
+mov al, 01h
+out port1c,al
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+mov al,01h
+out portc,al
+mov al, 0ah
+out port1a,al
+mov al, 05h
+out port1b,al
+mov al, 07h
+out port1c,al
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+mov al,81h
+out portc,al
+mov al, 09h
+out port1a,al
+mov al, 00h
+out port1b,al
+mov al, 81h
+out port1c,al
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+
+
+mov al,00h
+out portc,al
+out port1a,al
+out port1b,al
+out port1c,al
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+jmp return
+
+next:mov al,0bh
+out portc,al
+mov al, 0ah
+out port1a,al
+mov al, 01h
+out port1b,al
+mov al, 80h
+out port1c,al
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+mov al,81h
+out portc,al
+mov al, 01h
+out port1a,al
+mov al, 05h
+out port1b,al
+mov al, 81h
+out port1c,al
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+
+mov dx,bal
+mov bx,dx
+and bx,0f000h
+ror bh,4
+mov al,bh
+out portc,al
+;mov al,04h
+mov bx,dx
+and bx,0f00h
+mov al,bh
+out port1a,al
+mov bx,dx
+and bx,00f0h
+ror bl,4
+mov al,bl
+out port1b,al
+mov bx,dx
+and bx,000fh
+mov al,bl
+out port1c,al
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+call delay20ms
+jmp start
+
+alarm:mov al,8ah
+out port1a,al
+mov al,0bh
+out portc,al
+mov al,0dh
+out port1b,al
+mov al,02h
+out port1c,al
+mov bx,10d
+end1: call delay20ms
+dec bx
+jnz end1
+   
+mov al,0ah
+out port1a,al
+hlt
+ret
+
+
+ret
+keyboard proc near
+push bx
+mov ch,0eeh
+x0: rol ch,1            ;key release
+mov al,ch
+out porta,al
+mov bl,al
+in al,portb
+;mov al,0bh
+cmp al,0fh
+jnz x0
+
+x1: rol ch,1
+mov al,ch
+out porta,al
+mov bl,al
+in al,portb
+;mov al,0bh
+cmp al,0fh
+jz x1
+shl bl,4
+add bl,al
+lea si,table_keypad
+mov cl,00h
+dec cl
+dec si
+x2: inc cl
+inc si
+cmp bl,[si]
+jnz x2 
+cmp cl,0ah
+jz start
+pop bx
+;lea di,seven_seg
+;mov bl,cl
+;mov bh,00h
+;mov al,[di+bx]
+;out portc,al
+ret
+keyboard endp
+
+delay20ms proc near
+push cx
+mov cx,0ffffh
+xx: nop
+nop 
+loop xx
+pop cx
+ret
+delay20ms endp
+.exit
+end

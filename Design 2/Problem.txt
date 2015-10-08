@@ -1,0 +1,18 @@
+Project no.: P1
+Question:
+
+Design a processo-based online system for Data logging which stores the following parameters:
+
+
+
+
+Parameter:               Range:
+
+DC Voltage     :        0-10 V
+
+Temperature    :        200-800 C
+
+Pressure         :        2-10 Pa
+
+Data logging should be done every 10 minutes for a period and should be user programmable. 
+Facility for displaying the average values every six hours, for parameters read during the data logging period should also be included.

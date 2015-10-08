@@ -1,0 +1,88 @@
+DATA DW 0000H
+CODE DD ?
+
+KEY_FUNC PROC NEAR
+    MOV AH, 000H
+    CMP AL, 010H
+    JE DOWN
+    CMP AL, 020H
+    JE UP
+    CMP AL, 080H
+    JE CLEAR
+    CMP AL, 008H
+    JE DONE
+    MOV BX,AX
+    MOV CX, SI
+    MOV AL, 00AH
+    LOOP X
+    X: MUL AL
+    MUL DATA[DI]
+    ADD AX, BX
+    MOV DATA[DI], AX
+    JMP DONE
+    
+    DOWN: DEC DI 
+    JMP FUNC
+    UP : INC DI
+    JMP FUNC
+    CLEAR: MOV DATA[DI], 0000H
+    JMP FUNC
+    DONE: RET
+    
+    FUNC: CMP DI,0003H
+        JE CALL_T
+        CMP DI,0002H
+        JE CALL_P
+        CMP DI,0001H
+        JE CALL_V
+        
+    CALL_T: CALL INPUT_T
+    CALL_P: CALL INPUT_P
+    CAAL_V: CALL INPUT_V
+    
+    KEY_FUNC ENDP 
+
+INPUT_T PROC NEAR
+    MOV DI, 0003H
+    MOV SI, 0000H
+    
+START_T:  CALL KEYBOARD
+    CALL KEY_FUNC
+    
+    CMP AL, 008H
+    JE OVERT
+    INC SI
+    JMP START_T
+    OVERT: RET CODE
+    INPUT_T ENDP
+
+
+INPUT_P PROC NEAR
+    MOV DI, 0002H
+    MOV SI, 0000H
+    
+START_P:    CALL KEYBOARD
+    CALL KEY_FUNC
+    
+    CMP AL, 008H
+    JE OVERT
+    INC SI
+    JMP START_P
+    OVERT: RET CODE
+    INPUT_P ENDP
+
+INPUT_V PROC NEAR
+    MOV DI, 0001H
+    MOV SI, 0000H
+    
+START_V    CALL KEYBOARD
+    CALL KEY_FUNC
+    
+    CMP AL, 008H
+    JE OVERT
+    INC SI
+    JMP START_V
+    OVERT: RET CODE
+    INPUT_V ENDP
+
+          
